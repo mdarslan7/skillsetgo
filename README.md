@@ -1,1 +1,3 @@
-# SkillSetGo - Upskill yourself, in the best way possible.
+# SkillSetGo
+
+Upskill yourself, in the best way possible.
