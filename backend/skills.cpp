@@ -76,13 +76,18 @@ vector<string> getNextSkills(const string &domainName, const vector<string> &lea
             if (learnedSkills.empty()) {
                 nextSkills = domain.second;
             } else {
-                // Find the last learned skill in the domain
-                auto lastSkillIt = find(domain.second.begin(), domain.second.end(), learnedSkills.back());
-                if (lastSkillIt != domain.second.end()) {
-                    // Collect all skills after the last learned skill
-                    nextSkills.assign(lastSkillIt + 1, domain.second.end());
-                }
-            }
+            bool startAdding = false; // Flag to start adding skills after the last learned skill
+    
+            // Loop through the domain's skills
+            for (const auto &skill : domain.second) {
+            if (startAdding) {
+            nextSkills.push_back(skill); // Add skills after the last learned skill
+         }
+         if (skill == learnedSkills.back()) {
+            startAdding = true; // Start adding from the next skill
+         }
+      }
+}
             break;
         }
     }
