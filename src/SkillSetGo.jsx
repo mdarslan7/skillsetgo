@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// Mock data for domains and skills
 const domains = [
   "Web Development",
   "App Development",
@@ -291,11 +290,10 @@ const SkillSetGo = () => {
         throw new Error(`HTTP error! status: ${result.status}`);
       }
 
-      const data = await result.json(); // Directly parse the response as JSON
+      const data = await result.json(); 
 
       console.log("Parsed Data:", data);
 
-      // Check if the API returned valid data
       if (!data || !Array.isArray(data.nextSkills)) {
         throw new Error("Invalid API response");
       }

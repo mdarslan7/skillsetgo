@@ -6,7 +6,6 @@
 
 using namespace std;
 
-// List of domains and skills
 const vector<pair<string, vector<string>>> domains = {
     {"Web Development", {"HTML", "CSS", "JavaScript", "React", "Angular", "Vue.js", "TypeScript",
                          "Next.js", "SASS", "Bootstrap", "Tailwind CSS", "jQuery", "Node.js",
@@ -65,26 +64,22 @@ const vector<pair<string, vector<string>>> domains = {
                                   "Genetic Algorithms"}}
 };
 
-// Function to get the next skills after the user's last learned skill
 vector<string> getNextSkills(const string &domainName, const vector<string> &learnedSkills) {
     vector<string> nextSkills;
 
-    // Search for the given domain
     for (const auto &domain : domains) {
         if (domain.first == domainName) {
-            // If no skills were learned, return all skills
             if (learnedSkills.empty()) {
                 nextSkills = domain.second;
             } else {
-            bool startAdding = false; // Flag to start adding skills after the last learned skill
+            bool startAdding = false; 
     
-            // Loop through the domain's skills
             for (const auto &skill : domain.second) {
             if (startAdding) {
-            nextSkills.push_back(skill); // Add skills after the last learned skill
+            nextSkills.push_back(skill); 
          }
          if (skill == learnedSkills.back()) {
-            startAdding = true; // Start adding from the next skill
+            startAdding = true;
          }
       }
 }
@@ -117,7 +112,6 @@ int main(int argc, char* argv[]) {
 
     vector<string> nextSkills = getNextSkills(domainName, learnedSkills);
     
-    // Print the next skills as a comma-separated string
     for (size_t i = 0; i < nextSkills.size(); ++i) {
         cout << nextSkills[i];
         if (i < nextSkills.size() - 1) {

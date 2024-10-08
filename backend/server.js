@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const bodyParser = require('body-parser');
 const { execFile } = require('child_process');
@@ -7,11 +8,9 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
-// Middleware to parse JSON body
 app.use(cors());
 app.use(bodyParser.json());
 
-// Define the endpoint
 app.post('/next-skills', (req, res) => {
     const { domain, skills } = req.body;
 
@@ -19,11 +18,9 @@ app.post('/next-skills', (req, res) => {
         return res.status(400).json({ message: 'Domain (string) and skills (array) are required.' });
     }
 
-    // Prepare input for the C++ program
     const input = `${domain}:${skills.join(',')}`;
-    const cppExecutable = path.join(__dirname, 'a.exe'); // Path to the compiled C++ executable
+    const cppExecutable = path.join(__dirname, 'a.exe'); 
 
-    // Set a timeout for the execution (e.g., 10 seconds)
     const timeout = 10000;
 
     const child = execFile(cppExecutable, [input], { timeout: timeout }, (error, stdout, stderr) => {
@@ -40,25 +37,22 @@ app.post('/next-skills', (req, res) => {
             return res.status(500).json({ message: 'C++ program produced an error.' });
         }
 
-        // Check if stdout is empty
         if (!stdout.trim()) {
             return res.status(500).json({ message: 'C++ program produced no output.' });
         }
 
-        // Parse the output
         const nextSkills = stdout.trim().split(',').map(skill => skill.trim());
 
         return res.json({ nextSkills });
     });
 
-    // Handle potential errors
+    // error handling
     child.on('error', (error) => {
         console.error(`Failed to start C++ program: ${error.message}`);
         res.status(500).json({ message: 'Failed to start C++ program.' });
     });
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
