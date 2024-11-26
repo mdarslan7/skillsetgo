@@ -1,0 +1,26 @@
+Skills,Course Name,Course URL,Next Skills
+HTML,HTML for Beginners,https://www.coursera.org/learn/html,CSS|JavaScript|Responsive Design
+CSS,Advanced CSS and Sass,https://www.udemy.com/course/advanced-css-and-sass/,JavaScript|Responsive Design|Bootstrap|Tailwind CSS
+React,Modern React with Redux,https://www.udemy.com/course/react-redux/,Redux|Next.js|TypeScript|GraphQL|Webpack|Node.js
+Angular,Angular - The Complete Guide,https://www.udemy.com/course/the-complete-guide-to-angular/,TypeScript|RxJS|NgRx|REST APIs
+Vue.js,Vue - The Complete Guide,https://www.udemy.com/course/vuejs-2-the-complete-guide/,Vuex|Pinia|TypeScript|Tailwind CSS|Node.js
+Bootstrap,Bootstrap 5 From Scratch,https://www.udemy.com/course/bootstrap-5-from-scratch/,SASS|CSS Grid|Responsive Design
+Tailwind CSS,Tailwind CSS From Scratch,https://www.udemy.com/course/tailwindcss-from-scratch/,CSS|Responsive Design|JavaScript
+JavaScript,Web Application Development,https://www.coursera.org/learn/web-application-development,Vue.js|TypeScript|Next.js|SASS|Bootstrap|TailWind CSS|jQuery|Node.js|Express.js|Webpack|GraphQL|React|Redux|Docker|AWS|MongoDB|PostgreSQL
+Express.js,Full-Stack Web Development with React and Node.js,https://www.coursera.org/learn/full-stack-react-nodejs,GraphQL|REST APIs|Responsive Design|SEO Fundamentals|Web Accessibility|Webpack|Microservices|CI/CD|Jest|TypeScript|Redis
+Cryptography,Ethical Hacking,https://www.coursera.org/specializations/intro-cyber-security,Penetration Testing|Network Security|Digital Forensics|Security+|CISSP|Risk Assessment
+Malware Analysis,Incident Response,https://www.coursera.org/learn/malware-analysis-incident-response,Firewalls|Threat Hunting|SIEM|Reverse Engineering|Python for Security|Cloud Security
+Java,Complete Android App Development Bootcamp,https://www.udemy.com/course/complete-android-development-bootcamp,Kotlin|Swift|React Native|Dart|Firebase|SQLite|MVVM Architecture|In-app Purchases|ARCore|App Performance Optimization
+Swift,iOS App Development for Beginners,https://www.coursera.org/learn/ios-development,Objective-C|CoreData|Realm Database|Push Notifications|Google Maps API|Clean Architecture
+Python,Data Science and Machine Learning Bootcamp,https://www.udemy.com/course/python-data-science-and-machine-learning,Pandas|NumPy|Matplotlib|Seaborn|TensorFlow|PyTorch|Scikit-learn|Statistical Analysis|Deep Learning|Data Cleaning
+Supervised Learning,Machine Learning Specialization,https://www.coursera.org/specializations/machine-learning,Neural Networks|Unsupervised Learning|Gradient Boosting|XGBoost|CNN|RNN|Model Deployment|Autoencoders|Hyperparameter Tuning|PCA
+Solidity,Blockchain Development for Beginners,https://www.udemy.com/course/blockchain-development,Smart Contracts|Web3.js|Truffle Suite|Ganache|DeFi|NFTs|Staking and Yield Farming|Tokenomics|Zero-Knowledge Proofs|Layer 2 Scaling Solutions
+AWS,Cloud Computing Specialization,https://www.coursera.org/specializations/cloud-computing,Microsoft Azure|Google Cloud Platform|Kubernetes|Terraform|Cloud Networking|Serverless Architecture|Load Balancers|Cloud Cost Optimization|Auto-scaling|Multi-cloud Architecture
+Continuous Integration,DevOps Foundations,https://www.linkedin.com/learning/devops-foundations,Jenkins|Git|Terraform|Kubernetes|Helm|Docker|CI/CD Pipelines|Ansible|Prometheus|Blue/Green Deployment|Infrastructure as Code
+Unity,Game Development Bootcamp,https://www.udemy.com/course/game-development,Unreal Engine|C++|Game Physics|Multiplayer Networking|2D Game Development|Game UI/UX|Performance Optimization|AI in Games|AR/VR Development|Shader Programming
+Machine Learning,Artificial Intelligence A-Z,https://www.udemy.com/course/artificial-intelligence-az,NLP|Computer Vision|Reinforcement Learning|Transfer Learning|GANs|AI Ethics|Speech Recognition|Swarm Intelligence|Bayesian Networks|Autonomous Systems
+jQuery,jQuery for Beginners,https://www.udemy.com/course/jquery-for-beginners/,JavaScript|DOM Manipulation|AJAX|Bootstrap
+Node.js,The Complete Node.js Developer Course,https://www.udemy.com/course/the-complete-nodejs-developer-course/,Express.js|MongoDB|REST APIs|GraphQL|Socket.IO
+GraphQL,GraphQL with React and Node.js,https://www.udemy.com/course/graphql-react-nodejs/,TypeScript|Apollo|REST APIs|Next.js
+REST APIs,REST API Development with Flask and Python,https://www.coursera.org/learn/rest-api-development,GraphQL|API Security|JSON Web Tokens|Swagger|Postman   
+Git,Introduction to Git and GitHub,https://www.coursera.org/learn/introduction-git-github?msockid=142b21f16c246fa42ec635796dd66e0f,Version Control|Collaboration Tools|Git Workflows

@@ -1,58 +1,96 @@
 /* eslint-disable no-undef */
-const express = require('express');
-const bodyParser = require('body-parser');
-const { execFile } = require('child_process');
-const path = require('path');
-const cors = require('cors');
+
+const express = require("express");
+const path = require("path");
+const { spawn } = require("child_process");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
-app.use(cors());
 app.use(bodyParser.json());
+app.use(cors());
 
-app.post('/next-skills', (req, res) => {
-    const { domain, skills } = req.body;
+app.post("/recommend-course", (req, res) => {
+  const { skills } = req.body;
 
-    if (!domain || !Array.isArray(skills)) {
-        return res.status(400).json({ message: 'Domain (string) and skills (array) are required.' });
+  if (!skills || !Array.isArray(skills) || skills.length === 0) {
+    return res.status(400).json({
+      error: "Skills must be provided as a non-empty array",
+    });
+  }
+
+  const cppExecutablePath = path.resolve(__dirname, "a.exe");
+  const cppProcess = spawn(cppExecutablePath);
+
+  let outputData = "";
+  let errorData = "";
+
+  cppProcess.stdout.on("data", (data) => {
+    outputData += data.toString();
+  });
+
+  cppProcess.stderr.on("data", (data) => {
+    errorData += data.toString();
+    // Log error for debugging
+    console.error(`C++ Error: ${data}`);
+  });
+
+  cppProcess.on("close", (code) => {
+    if (code !== 0) {
+      return res.status(500).json({
+        error: "Error in course recommendation",
+        details: errorData,
+      });
     }
 
-    const input = `${domain}:${skills.join(',')}`;
-    const cppExecutable = path.join(__dirname, 'a.exe'); 
+    try {
+      // Split the output into lines
+      const lines = outputData.trim().split("\n");
 
-    const timeout = 10000;
+      if (lines.length < 3) {
+        return res.status(500).json({
+          error: "Unexpected output format from C++ program",
+          details: outputData,
+        });
+      }
 
-    const child = execFile(cppExecutable, [input], { timeout: timeout }, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error executing C++ program: ${error.message}`);
-            if (error.code === 'ETIMEDOUT') {
-                return res.status(504).json({ message: 'C++ program execution timed out.' });
-            }
-            return res.status(500).json({ message: 'Error executing the C++ program.' });
-        }
+      // Parse the output correctly
+      const courseName = lines[0].trim();
+      const courseUrl = lines[1].trim();
+      const nextSkillsString = lines[2].trim();
 
-        if (stderr) {
-            console.error(`C++ program stderr: ${stderr}`);
-            return res.status(500).json({ message: 'C++ program produced an error.' });
-        }
+      // Split the next skills string into an array of individual skills
+      const nextSkills = nextSkillsString
+        ? nextSkillsString.split(" ").map((skill) => skill.trim())
+        : [];
 
-        if (!stdout.trim()) {
-            return res.status(500).json({ message: 'C++ program produced no output.' });
-        }
+      // Build the response object
+      const response = {
+        recommendedCourse: {
+          name: courseName,
+          url: courseUrl,
+          nextSkills: nextSkills,
+        },
+        currentSkills: skills,
+      };
 
-        const nextSkills = stdout.trim().split(',').map(skill => skill.trim());
+      res.json(response);
+    } catch (parseError) {
+      console.error("Parse error:", parseError);
+      res.status(500).json({
+        error: "Failed to parse recommendation",
+        details: parseError.message,
+      });
+    }
+  });
 
-        return res.json({ nextSkills });
-    });
-
-    // error handling
-    child.on('error', (error) => {
-        console.error(`Failed to start C++ program: ${error.message}`);
-        res.status(500).json({ message: 'Failed to start C++ program.' });
-    });
+  // Send skills to C++ program
+  cppProcess.stdin.write(skills.join(", ") + "\n");
+  cppProcess.stdin.end();
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });

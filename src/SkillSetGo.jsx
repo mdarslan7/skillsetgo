@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { ChevronDown, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 const SkillSetGo = () => {
   const [selectedDomain, setSelectedDomain] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [recommendedSkills, setRecommendedSkills] = useState([]);
+  const [recommendedCourse, setRecommendedCourse] = useState([]);
+  const [recommendedCourseUrl, setRecommendedCourseUrl] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const domains = [
@@ -269,19 +271,27 @@ const SkillSetGo = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/next-skills", {
+      const response = await fetch("http://localhost:3000/recommend-course", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          domain: selectedDomain,
           skills: selectedSkills,
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setRecommendedSkills(data.nextSkills);
+      setRecommendedSkills(data.recommendedCourse.nextSkills);
+      setRecommendedCourse(data.recommendedCourse.name);
+      setRecommendedCourseUrl(data.recommendedCourse.url);
+      console.log(data.recommendedCourse.name);
+      console.log(data.recommendedCourse.url);
     } catch (error) {
       console.error("Error fetching recommendations:", error);
+      setRecommendedSkills([]);
     } finally {
       setIsLoading(false);
     }
@@ -295,18 +305,14 @@ const SkillSetGo = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             SkillSetGo
           </h1>
-          <p className="text-gray-600 mt-2">
-            A next-gen course recommendation system
-          </p>
+          <p className="text-gray-600 mt-2">A next-gen course recommendation system</p>
         </div>
-
+  
         {/* Main Content */}
         <div className="space-y-6">
           {/* Domain Selector */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Domain
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Select Domain</label>
             <div className="relative">
               <select
                 value={selectedDomain}
@@ -320,19 +326,13 @@ const SkillSetGo = () => {
                   </option>
                 ))}
               </select>
-              <ChevronDown
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20}
-              />
             </div>
           </div>
-
+  
           {/* Skills Selection */}
           {selectedDomain && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Skills
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Select Skills</label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {skillsByDomain[selectedDomain]?.map((skill) => (
                   <button
@@ -350,7 +350,7 @@ const SkillSetGo = () => {
               </div>
             </div>
           )}
-
+  
           {/* Get Recommendations Button */}
           {selectedSkills.length > 0 && (
             <button
@@ -362,47 +362,29 @@ const SkillSetGo = () => {
               {isLoading ? "Getting Recommendations..." : "Get Recommendations"}
             </button>
           )}
-
+  
           {/* Recommended Skills as Roadmap */}
           {recommendedSkills.length > 0 && (
             <div className="mt-12">
-              <h3 className="text-xl font-semibold text-gray-800 mb-8 text-center">
-                Your Learning Roadmap
-              </h3>
-
-              {/* Timeline Container */}
+              <h3 className="text-xl font-semibold text-gray-800 mb-8 text-center">Your Learning Roadmap</h3>
               <div className="relative">
-                {/* Vertical Line */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full" />
-
-                {/* Timeline Items */}
                 <div className="relative">
                   {recommendedSkills.map((skill, index) => (
                     <div
                       key={skill}
-                      className={`flex items-center mb-8 ${
-                        index % 2 === 0 ? "flex-row" : "flex-row-reverse"
-                      }`}
+                      className={`flex items-center mb-8 ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
                     >
-                      {/* Content */}
-                      <div
-                        className={`w-5/12 ${
-                          index % 2 === 0 ? "text-right pr-8" : "text-left pl-8"
-                        }`}
-                      >
+                      <div className={`w-5/12 ${index % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}>
                         <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-lg hover:shadow-xl transition-all">
-                          <span className="font-medium text-gray-800">
-                            {skill}
-                          </span>
+                          <span className="font-medium text-gray-800">{skill}</span>
                         </div>
                       </div>
-
-                      {/* Circle on Timeline */}
+  
                       <div className="w-2/12 flex justify-center">
                         <div className="w-4 h-4 bg-white rounded-full border-4 border-blue-500 transform transition-transform hover:scale-125" />
                       </div>
-
-                      {/* Empty space for opposite side */}
+  
                       <div className="w-5/12" />
                     </div>
                   ))}
@@ -410,10 +392,30 @@ const SkillSetGo = () => {
               </div>
             </div>
           )}
+  
+          {/* Recommended Course Card */}
+          {recommendedSkills.length > 0 && recommendedCourse && recommendedCourseUrl && (
+            <div className="mt-12">
+              <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-2xl font-semibold text-center text-gray-800 mb-4">{recommendedCourse}</h3>
+                <p className="text-gray-600 mb-4">
+                  A great course to enhance your skills in this domain. Explore the course to advance your knowledge.
+                </p>
+                <a
+                  href={recommendedCourseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center rounded-lg shadow-md hover:shadow-lg transition-all"
+                >
+                  Visit Course
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default SkillSetGo;
